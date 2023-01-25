@@ -1,6 +1,6 @@
 package kr.sprouts.sandbox.kafka.controller;
 
-import kr.sprouts.sandbox.kafka.dto.TestRequest;
+import kr.sprouts.sandbox.kafka.dto.schema.TestSchema;
 import kr.sprouts.sandbox.kafka.service.ProducerService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,7 +19,7 @@ public class ProduceController {
     }
 
     @PostMapping
-    public void produce(@RequestBody TestRequest request) {
-        this.producerService.produce(request);
+    public void produce(@RequestBody TestSchema schema) {
+        this.producerService.produce(schema);
     }
 }
