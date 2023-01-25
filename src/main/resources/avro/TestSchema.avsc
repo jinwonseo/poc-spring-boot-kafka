@@ -1,0 +1,33 @@
+{
+    "namespace": "kr.sprouts.sandbox.kafka.dto.schema",
+    "type": "record",
+    "name": "TestSchema",
+    "fields": [
+        {
+            "name": "id",
+            "type": {
+                "type": "string",
+                "logicalType": "uuid"
+            }
+        },
+        {
+            "name": "code",
+            "type": "string"
+        },
+        {
+            "name": "name",
+            "type": "string"
+        },
+        {
+            "name": "version",
+            "type": "float"
+        },
+        {
+            "name": "createOn",
+            "type": {
+                "type": "long",
+                "logicalType": "local-timestamp-millis"
+            }
+        }
+    ]
+}
