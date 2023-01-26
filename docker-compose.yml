@@ -24,7 +24,7 @@ services:
         ipv4_address: 172.20.0.51
 
   zookeeper-01:
-    image: registry.nexus.sprouts.kr/confluentinc/cp-zookeeper:7.3.0
+    image: confluentinc/cp-zookeeper:7.3.0
     hostname: zookeeper-01
     container_name: zookeeper-01
     ports:
