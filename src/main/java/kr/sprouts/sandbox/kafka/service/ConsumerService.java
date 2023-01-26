@@ -12,6 +12,6 @@ public class ConsumerService {
 
     @KafkaListener(topics = "spring-boot-kafka-avsc")
     public void consume(ConsumerRecord<String, TestSchema> record) {
-        log.info(record.value().getName());
+        log.info(record.value().toString());
     }
 }
