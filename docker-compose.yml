@@ -10,19 +10,6 @@ networks:
           gateway: 172.20.0.1
 
 services:
-  kafka-ui:
-    image: provectuslabs/kafka-ui
-    hostname: kafka-ui
-    container_name: kafka-ui
-    restart: always
-    environment:
-      - KAFKA_CLUSTERS_0_NAME=local
-      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka-01:19092,kafka-02:19093,kafka-03:19094
-      - KAFKA_CLUSTERS_0_ZOOKEEPER=zookeeper-01:2181
-    networks:
-      docker-host:
-        ipv4_address: 172.20.0.51
-
   zookeeper-01:
     image: confluentinc/cp-zookeeper:7.3.0
     hostname: zookeeper-01
@@ -35,7 +22,7 @@ services:
       ZOOKEEPER_SERVERS: zookeeper-01:2888:3888
     networks:
       docker-host:
-        ipv4_address: 172.20.0.52
+        ipv4_address: 172.20.0.10
 
   kafka-01:
     image: confluentinc/cp-kafka:7.3.0
@@ -43,7 +30,6 @@ services:
     container_name: kafka-01
     ports:
       - "9092:9092"
-    #      - "29092:29092"
     environment:
       KAFKA_ADVERTISED_HOST_NAME: kafka-01
       KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka-01:19092,EXTERNAL://${DOCKER_HOST_IP:-127.0.0.1}:9092,DOCKER://host.docker.internal:29092
@@ -58,7 +44,7 @@ services:
       - zookeeper-01
     networks:
       docker-host:
-        ipv4_address: 172.20.0.53
+        ipv4_address: 172.20.0.11
 
   kafka-02:
     image: confluentinc/cp-kafka:7.3.0
@@ -66,7 +52,6 @@ services:
     container_name: kafka-02
     ports:
       - "9093:9093"
-    #      - "29093:29093"
     environment:
       KAFKA_ADVERTISED_HOST_NAME: kafka-02
       KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka-02:19093,EXTERNAL://${DOCKER_HOST_IP:-127.0.0.1}:9093,DOCKER://host.docker.internal:29093
@@ -81,14 +66,14 @@ services:
       - zookeeper-01
     networks:
       docker-host:
-        ipv4_address: 172.20.0.54
+        ipv4_address: 172.20.0.12
+
   kafka-03:
     image: confluentinc/cp-kafka:7.3.0
     hostname: kafka-03
     container_name: kafka-03
     ports:
       - "9094:9094"
-    #      - "29094:29094"
     environment:
       KAFKA_ADVERTISED_HOST_NAME: kafka-03
       KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka-03:19094,EXTERNAL://${DOCKER_HOST_IP:-127.0.0.1}:9094,DOCKER://host.docker.internal:29094
@@ -103,14 +88,14 @@ services:
       - zookeeper-01
     networks:
       docker-host:
-        ipv4_address: 172.20.0.55
+        ipv4_address: 172.20.0.13
 
   schema-registry:
     image: confluentinc/cp-schema-registry:7.3.0
     hostname: schema-registry
     container_name: schema-registry
-    #    ports:
-    #      - "8082:8081"
+    ports:
+      - "8081:8081"
     environment:
       SCHEMA_REGISTRY_HOST_NAME: schema-registry
       SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: 'kafka-01:19092,kafka-02:19093,kafka-03:19094'
@@ -119,17 +104,32 @@ services:
       SCHEMA_REGISTRY_ACCESS_CONTROL_ALLOW_ORIGIN: '*'
     networks:
       docker-host:
-        ipv4_address: 172.20.0.56
+        ipv4_address: 172.20.0.14
+
+  kafka-ui:
+    image: provectuslabs/kafka-ui
+    hostname: kafka-ui
+    container_name: kafka-ui
+    restart: always
+    port:
+      - "8080:8080"
+    environment:
+      - KAFKA_CLUSTERS_0_NAME=local
+      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka-01:19092,kafka-02:19093,kafka-03:19094
+      - KAFKA_CLUSTERS_0_ZOOKEEPER=zookeeper-01:2181
+    networks:
+      docker-host:
+        ipv4_address: 172.20.0.20
 
   schema-registry-ui:
     image: landoop/schema-registry-ui:0.9.5
     hostname: schema-registry-ui
     container_name: schema-registry-ui
-    #    ports:
-    #      - "8000:8000"
+    ports:
+      - "8000:8000"
     environment:
       SCHEMAREGISTRY_URL: http://schema-registry:8081
       PROXY: "true"
     networks:
       docker-host:
-        ipv4_address: 172.20.0.57
+        ipv4_address: 172.20.0.21
