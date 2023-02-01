@@ -13,7 +13,7 @@ $ mvn install
 ```
 
 ## publish kafka message / request
-* Url: http://127.0.0.1:8080
+* Url: http://127.0.0.1:8090
 * Method: POST
 * Body
   ```json
